@@ -62,6 +62,9 @@ class MainActivity : ComponentActivity() {
 
             is ChallengeRoute -> NavEntry(key) {
                 ChallengeScreen(
+                    onNavigateBack = {
+                        backStack.removeLastOrNull()
+                    },
                     modifier = Modifier.padding(innerPadding),
                 )
             }
