@@ -4,44 +4,67 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.ui.NavDisplay
+import com.neuron.ui.composable.ChallengeScreen
+import com.neuron.ui.composable.DashboardScreen
+import com.neuron.ui.model.ChallengeRoute
+import com.neuron.ui.model.DashboardRoute
+import com.neuron.ui.model.Route
 import com.neuron.ui.theme.NeuronTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val backStack = remember { mutableStateListOf<Route>(DashboardRoute) }
             NeuronTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                    NavDisplay(
+                        backStack = backStack,
+                        onBack = { backStack.removeLastOrNull() },
+                        entryProvider = { key ->
+                            getNavEntry(
+                                backStack = backStack,
+                                innerPadding = innerPadding,
+                                key = key,
+                            )
+                        }
                     )
                 }
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+    private fun getNavEntry(
+        backStack: MutableList<Route>,
+        innerPadding: PaddingValues,
+        key: Route,
+    ): NavEntry<Route> {
+        return when (key) {
+            is DashboardRoute -> NavEntry(key) {
+                DashboardScreen(
+                    onNavigateToChallenge = {
+                        backStack.add(ChallengeRoute)
+                    },
+                    modifier = Modifier.padding(innerPadding),
+                )
+            }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    NeuronTheme {
-        Greeting("Android")
+            is ChallengeRoute -> NavEntry(key) {
+                ChallengeScreen(
+                    modifier = Modifier.padding(innerPadding),
+                )
+            }
+        }
     }
 }
