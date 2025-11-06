@@ -7,10 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -88,37 +86,4 @@ fun ChallengeScreen(
             fontSize = TextUnit(value = 16f, type = TextUnitType.Sp),
         )
     }
-}
-
-@Composable
-private fun BackDialog(
-    onDismiss:() -> Unit,
-    onNavigateBack: () -> Unit,
-) {
-    AlertDialog(
-        onDismissRequest = {
-            onDismiss.invoke()
-        },
-        title = { Text("Stop this challenge ?") },
-        text = { Text("Are you sure you want to stop this challenge ?") },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    onDismiss.invoke()
-                    onNavigateBack.invoke()
-                }
-            ) {
-                Text("Yes")
-            }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = {
-                    onDismiss.invoke()
-                }
-            ) {
-                Text("No")
-            }
-        }
-    )
 }
