@@ -17,7 +17,8 @@ class ChallengeViewModel(
     val uiState: StateFlow<ChallengeUiState> = _uiState.asStateFlow()
 
     init {
-        nextChallenge()
+        println("ChallengeViewModel : init")
+        startChallenge()
     }
 
     fun answer(optionChosen: Int) {
@@ -29,14 +30,36 @@ class ChallengeViewModel(
         }
     }
 
+    private fun startChallenge() {
+        nextChallenge()
+    }
+
     private fun nextChallenge() {
-        _uiState.update {
-            val challenge: Challenge = getChallengeUseCase.invoke()
-            it.copy(
-                challengeText = challenge.challengeText,
-                result = challenge.result,
-                resultOptions = challenge.resultOptions,
-            )
+        if (_uiState.value.challengeSolvedCount < NB_CHALLENGE) {
+            _uiState.update {
+                val challenge: Challenge = getChallengeUseCase.invoke()
+                it.copy(
+                    challengeText = challenge.challengeText,
+                    result = challenge.result,
+                    resultOptions = challenge.resultOptions,
+                )
+            }
+        } else {
+            endChallenge()
         }
+    }
+
+    private fun endChallenge() {
+        // TODO: Save record in history
+        _uiState.update { it.copy(isChallengeEnded = true) }
+    }
+
+    override fun onCleared() {
+        println("ChallengeViewModel : onCleared")
+        super.onCleared()
+    }
+
+    private companion object {
+        const val NB_CHALLENGE: Int = 2
     }
 }

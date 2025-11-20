@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,17 +31,25 @@ import org.koin.compose.viewmodel.koinViewModel
 fun ChallengeScreenPreview() {
     ChallengeScreen(
         onNavigateBack = {},
+        onNavigateToResult = {},
     )
 }
 
 @Composable
 fun ChallengeScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToResult: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ChallengeViewModel = koinViewModel(),
 ) {
     val state by viewModel.uiState.collectAsState()
     var showBackDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = state.isChallengeEnded) {
+        if (state.isChallengeEnded) {
+            onNavigateToResult.invoke()
+        }
+    }
 
     BackHandler(
         enabled = true,
