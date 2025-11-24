@@ -18,9 +18,6 @@ import androidx.navigation3.ui.NavDisplay
 import com.neuron.ui.composable.ChallengeScreen
 import com.neuron.ui.composable.DashboardScreen
 import com.neuron.ui.composable.ResultScreen
-import com.neuron.ui.model.ChallengeRoute
-import com.neuron.ui.model.DashboardRoute
-import com.neuron.ui.model.ResultRoute
 import com.neuron.ui.model.Route
 import com.neuron.ui.theme.NeuronTheme
 
@@ -30,7 +27,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val backStack = remember { mutableStateListOf<Route>(DashboardRoute) }
+            val backStack = remember { mutableStateListOf<Route>(Route.Dashboard) }
             NeuronTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavDisplay(
@@ -59,36 +56,36 @@ class MainActivity : ComponentActivity() {
         key: Route,
     ): NavEntry<Route> {
         return when (key) {
-            is DashboardRoute -> NavEntry(key) {
+            is Route.Dashboard -> NavEntry(key) {
                 DashboardScreen(
                     onNavigateToChallenge = {
-                        backStack.add(ChallengeRoute)
+                        backStack.add(Route.Challenge)
                     },
                     modifier = Modifier.padding(innerPadding),
                 )
             }
 
-            is ChallengeRoute -> NavEntry(key) {
+            is Route.Challenge -> NavEntry(key) {
                 ChallengeScreen(
                     onNavigateBack = {
                         backStack.removeLastOrNull()
                     },
                     onNavigateToResult = {
                         backStack.removeLastOrNull()
-                        backStack.add(ResultRoute)
+                        backStack.add(Route.Result)
                     },
                     modifier = Modifier.padding(innerPadding),
                 )
             }
 
-            is ResultRoute -> NavEntry(key) {
+            is Route.Result -> NavEntry(key) {
                 ResultScreen(
                     onRestart = {
-                        backStack[backStack.lastIndex] = ChallengeRoute
+                        backStack[backStack.lastIndex] = Route.Challenge
                     },
                     onGoHome = {
                         backStack.clear()
-                        backStack.add(DashboardRoute)
+                        backStack.add(Route.Dashboard)
                     },
                     modifier = Modifier.padding(innerPadding),
                 )

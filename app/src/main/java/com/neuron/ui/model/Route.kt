@@ -1,7 +1,18 @@
 package com.neuron.ui.model
 
-sealed interface Route
+import androidx.navigation3.runtime.NavKey
+import kotlinx.serialization.Serializable
 
-data object DashboardRoute : Route
-data object ChallengeRoute : Route
-data object ResultRoute : Route
+@Serializable
+sealed interface Route : NavKey {
+
+    @Serializable
+    data object Dashboard : Route
+
+    @Serializable
+    data object Challenge : Route
+
+    @Serializable
+    data object Result : Route
+}
+
