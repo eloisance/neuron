@@ -6,5 +6,5 @@ import com.neuron.ui.model.ChallengeResult
 @Immutable
 data class ResultScreenState(
     val totalTime: String = "",
-    val results: List<ChallengeResult> = emptyList()
+    val results: List<ChallengeResult> = emptyList(),
 )

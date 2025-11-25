@@ -17,7 +17,7 @@ private fun BackDialogPreview() {
 
 @Composable
 fun BackDialog(
-    onDismiss:() -> Unit,
+    onDismiss: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     AlertDialog(

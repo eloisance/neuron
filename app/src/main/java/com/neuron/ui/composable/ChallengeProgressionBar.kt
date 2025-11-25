@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -17,7 +18,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+
+@Preview
+@Composable
+private fun ChallengeProgressionBarPreview() {
+    Box(modifier = Modifier
+        .width(300.dp)
+        .height(500.dp)
+    ) {
+        ChallengeProgressionBar(
+            solvedCount = 2,
+            totalChallenges = 5,
+            modifier = Modifier.padding(16.dp)
+        )
+    }
+}
 
 @Composable
 fun ChallengeProgressionBar(
