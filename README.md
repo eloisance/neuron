@@ -10,7 +10,7 @@ Challenging the user on simple mental calculation.
 
 ## Demo
 
-![App demo](demo.gif)
+<img src="demo.gif" width="400" alt="App demo" />
 
 ## Libraries used
 
