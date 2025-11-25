@@ -2,11 +2,14 @@ package com.neuron.ui.composable
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -69,32 +72,44 @@ fun ChallengeScreen(
          )
     }
 
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Text(
-            text = state.challengeText,
-            fontSize = TextUnit(value = 24f, type = TextUnitType.Sp),
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.align(Alignment.TopCenter)
         ) {
-            state.resultOptions.forEach { option ->
-                Button(onClick = {
-                    viewModel.answer(optionChosen = option)
-                }) {
-                    Text(text = option.toString())
+            ChallengeProgressionBar(
+                solvedCount = state.challengeSolvedCount,
+                totalChallenges = NB_CHALLENGE,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, top = 32.dp, end = 16.dp, bottom = 0.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = state.elapsedTimeText,
+                color = Color.DarkGray,
+                fontSize = TextUnit(value = 16f, type = TextUnitType.Sp),
+                modifier = Modifier.padding(start = 16.dp),
+            )
+        }
+        Column(
+            modifier = Modifier.align(Alignment.Center),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = state.challengeText,
+                fontSize = TextUnit(value = 24f, type = TextUnitType.Sp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                state.resultOptions.forEach { option ->
+                    Button(onClick = {
+                        viewModel.answer(optionChosen = option)
+                    }) {
+                        Text(text = option.toString())
+                    }
                 }
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "${state.elapsedTimeText} | ${state.challengeSolvedCount} / $NB_CHALLENGE",
-            color = Color.DarkGray,
-            fontSize = TextUnit(value = 16f, type = TextUnitType.Sp),
-        )
     }
 }
