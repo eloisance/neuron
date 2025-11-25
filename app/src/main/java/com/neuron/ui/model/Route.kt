@@ -13,6 +13,6 @@ sealed interface Route : NavKey {
     data object Challenge : Route
 
     @Serializable
-    data object Result : Route
+    data class Result(val challengeResults: ChallengeResults) : Route
 }
 

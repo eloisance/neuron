@@ -23,7 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import com.neuron.ui.model.ChallengeResults
 import com.neuron.ui.viewmodel.ChallengeViewModel
+import com.neuron.ui.viewmodel.ChallengeViewModel.Companion.NB_CHALLENGE
 import org.koin.compose.viewmodel.koinViewModel
 
 @Preview
@@ -38,7 +40,7 @@ fun ChallengeScreenPreview() {
 @Composable
 fun ChallengeScreen(
     onNavigateBack: () -> Unit,
-    onNavigateToResult: () -> Unit,
+    onNavigateToResult: (challengeResults: ChallengeResults) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ChallengeViewModel = koinViewModel(),
 ) {
@@ -47,7 +49,7 @@ fun ChallengeScreen(
 
     LaunchedEffect(key1 = state.isChallengeEnded) {
         if (state.isChallengeEnded) {
-            onNavigateToResult.invoke()
+            onNavigateToResult.invoke(state.challengeResults)
         }
     }
 
@@ -90,7 +92,7 @@ fun ChallengeScreen(
         }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Challenge solved : ${state.challengeSolvedCount}",
+            text = "${state.elapsedTimeText} | ${state.challengeSolvedCount} / $NB_CHALLENGE",
             color = Color.DarkGray,
             fontSize = TextUnit(value = 16f, type = TextUnitType.Sp),
         )

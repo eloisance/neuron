@@ -6,7 +6,11 @@ The idea of this app is to build a cool app but also to put in practice a clean 
 
 ## Product idea
 
-Challenging the user on mental calculation.
+Challenging the user on simple mental calculation.
+
+## Demo
+
+![App demo](demo.gif)
 
 ## Libraries used
 

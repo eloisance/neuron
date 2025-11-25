@@ -70,9 +70,9 @@ class MainActivity : ComponentActivity() {
                     onNavigateBack = {
                         backStack.removeLastOrNull()
                     },
-                    onNavigateToResult = {
+                    onNavigateToResult = { challengeResults ->
                         backStack.removeLastOrNull()
-                        backStack.add(Route.Result)
+                        backStack.add(Route.Result(challengeResults = challengeResults))
                     },
                     modifier = Modifier.padding(innerPadding),
                 )
@@ -80,6 +80,7 @@ class MainActivity : ComponentActivity() {
 
             is Route.Result -> NavEntry(key) {
                 ResultScreen(
+                    challengeResults = key.challengeResults,
                     onRestart = {
                         backStack[backStack.lastIndex] = Route.Challenge
                     },

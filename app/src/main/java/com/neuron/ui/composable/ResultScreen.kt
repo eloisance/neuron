@@ -25,22 +25,29 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.neuron.ui.model.ChallengeResults
 import com.neuron.ui.viewmodel.ResultViewModel
 
 @Composable
 fun ResultScreen(
+    challengeResults: ChallengeResults,
     onRestart: () -> Unit,
     onGoHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ResultViewModel = viewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.setResults(challengeResults = challengeResults)
+    }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -80,7 +87,7 @@ fun ResultScreen(
                         .weight(1f)
                         .padding(vertical = 16.dp)
                 ) {
-                    items(uiState.calculationTimes) { time ->
+                    items(uiState.results) { result ->
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -89,11 +96,11 @@ fun ResultScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Timer,
-                                contentDescription = "Time for a calculation",
+                                contentDescription = "Time for a challenge icon",
                                 modifier = Modifier.size(24.dp)
                             )
                             Text(
-                                text = "  Calculation Time: $time",
+                                text = "Time for (${result.challenge}) : ${result.time}",
                                 style = MaterialTheme.typography.bodyLarge,
                                 modifier = Modifier.padding(start = 8.dp)
                             )

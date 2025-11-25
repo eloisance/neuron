@@ -1,5 +1,6 @@
 package com.neuron.di
 
+import com.neuron.domain.ChallengeTimer
 import com.neuron.domain.usecase.GetChallengeUseCase
 import com.neuron.ui.viewmodel.ChallengeViewModel
 import org.koin.core.module.dsl.viewModel
@@ -11,7 +12,14 @@ val appModule = module {
         GetChallengeUseCase()
     }
 
+    factory {
+        ChallengeTimer()
+    }
+
     viewModel {
-        ChallengeViewModel(getChallengeUseCase = get())
+        ChallengeViewModel(
+            getChallengeUseCase = get(),
+            challengeTimer = get(),
+        )
     }
 }
