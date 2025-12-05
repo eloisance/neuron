@@ -2,6 +2,7 @@ package com.neuron
 
 import android.app.Application
 import com.neuron.di.appModule
+import com.neuron.di.networkModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -14,7 +15,7 @@ class NeuronApplication : Application() {
         startKoin {
             androidLogger(level = Level.WARNING)
             androidContext(androidContext = this@NeuronApplication)
-            modules(modules = appModule)
+            modules(modules = listOf(appModule, networkModule))
         }
     }
 }
