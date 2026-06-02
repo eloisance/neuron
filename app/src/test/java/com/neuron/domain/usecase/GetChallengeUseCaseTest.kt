@@ -19,7 +19,7 @@ class GetChallengeUseCaseTest {
     }
 
     @Test
-    fun `challengeText matches the pattern a + b = ?`() {
+    fun `challengeText matches the pattern a + b = question mark`() {
         repeat(iterations) {
             val challenge = useCase()
             assertTrue(
