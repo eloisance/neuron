@@ -2,6 +2,8 @@ package com.neuron.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.neuron.data.ChallengeRepository
+import com.neuron.data.ChallengeResultRequest
 import com.neuron.domain.ChallengeTimer
 import com.neuron.domain.model.Challenge
 import com.neuron.domain.usecase.GetChallengeUseCase
@@ -17,6 +19,7 @@ import kotlinx.coroutines.launch
 class ChallengeViewModel(
     private val getChallengeUseCase: GetChallengeUseCase,
     private val challengeTimer: ChallengeTimer,
+    private val challengeRepository: ChallengeRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ChallengeScreenUiState())
@@ -46,6 +49,14 @@ class ChallengeViewModel(
                 )
             )
             _uiState.update { it.copy(challengeSolvedCount = it.challengeSolvedCount + 1) }
+            viewModelScope.launch {
+                challengeRepository.sendChallengeResult(
+                    request = ChallengeResultRequest(
+                        challengeText = _uiState.value.challengeText,
+                        time = challengeTimer.getAnswerTime(),
+                    )
+                )
+            }
             nextChallenge()
         } else {
             // Animate the UI

@@ -1,5 +1,6 @@
 package com.neuron.di
 
+import com.neuron.data.ChallengeRepository
 import com.neuron.domain.ChallengeTimer
 import com.neuron.domain.usecase.GetChallengeUseCase
 import com.neuron.ui.viewmodel.ChallengeViewModel
@@ -7,6 +8,10 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
+
+    factory {
+        ChallengeRepository(httpClient = get())
+    }
 
     factory {
         GetChallengeUseCase()
@@ -20,6 +25,7 @@ val appModule = module {
         ChallengeViewModel(
             getChallengeUseCase = get(),
             challengeTimer = get(),
+            challengeRepository = get(),
         )
     }
 }
