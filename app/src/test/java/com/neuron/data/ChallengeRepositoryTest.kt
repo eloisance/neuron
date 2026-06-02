@@ -12,7 +12,6 @@ import io.ktor.http.headersOf
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ChallengeRepositoryTest {
@@ -44,8 +43,8 @@ class ChallengeRepositoryTest {
 
         repository.sendChallengeResult(ChallengeResultRequest("5 * 3", 800L))
 
-        val contentType = engine.requestHistory.single().headers[HttpHeaders.ContentType].orEmpty()
-        assertTrue("Expected application/json content type", contentType.startsWith("application/json"))
+        val contentType = engine.requestHistory.single().body.contentType
+        assertEquals(ContentType.Application.Json, contentType?.withoutParameters())
     }
 
     @Test
